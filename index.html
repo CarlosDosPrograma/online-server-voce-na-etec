@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobreviva ao Mundo Invertido</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <div class="spore-bg" id="spore-bg"></div>
+
+  <!-- ===================== LOBBY ===================== -->
+  <div class="screen active" id="tela-lobby">
+    <div id="trofeu-lobby">
+      <div class="trofeu-icone">🏆</div>
+      <div id="trofeu-contagem">0</div>
+    </div>
+
+    <div id="nick-input-container">
+      <label for="input-nick">Nick</label>
+      <input type="text" id="input-nick" maxlength="14" placeholder="seu nick">
+    </div>
+
+    <div class="title-main">Sobreviva ao<br>Mundo Invertido</div>
+    <div class="subtitle">// um pesadelo top-down //</div>
+    <div class="menu-btns">
+      <button class="btn" id="btn-jogar">Jogar</button>
+      <button class="btn" id="btn-infinito">Infinito</button>
+      <button class="btn secundario" id="btn-loja">Loja</button>
+      <button class="btn secundario" id="btn-personagens">Personagens</button>
+      <button class="btn secundario" id="btn-creditos">Créditos</button>
+    </div>
+  </div>
+
+  <!-- ===================== CRÉDITOS ===================== -->
+  <div class="screen" id="tela-creditos">
+    <div class="creditos-box">
+      <h2>Créditos</h2>
+      <div class="credito-linha"><span class="credito-funcao">Criador &amp; Diretor do Jogo</span><span class="credito-nome">Pedro Gabriel Oliveira Catão</span></div>
+      <div class="credito-linha"><span class="credito-funcao">Game Design</span><span class="credito-nome">Pedro Gabriel Oliveira Catão</span></div>
+      <div class="credito-linha"><span class="credito-funcao">Programação</span><span class="credito-nome">Pedro Gabriel Oliveira Catão</span></div>
+      <div class="credito-linha"><span class="credito-funcao">Arte &amp; Direção Visual</span><span class="credito-nome">Pedro Gabriel Oliveira Catão</span></div>
+      <div class="credito-linha"><span class="credito-funcao">Roteiro &amp; Ambientação</span><span class="credito-nome">Pedro Gabriel Oliveira Catão</span></div>
+      <div class="credito-linha"><span class="credito-funcao">Design de Fases (Ondas)</span><span class="credito-nome">Pedro Gabriel Oliveira Catão</span></div>
+      <div class="credito-linha"><span class="credito-funcao">Testes &amp; QA</span><span class="credito-nome">Pedro Gabriel Oliveira Catão</span></div>
+      <div class="credito-linha"><span class="credito-funcao">Equipe</span><span class="credito-nome">Somente Pedro Gabriel Oliveira Catão</span></div>
+    </div>
+    <button class="btn secundario" id="btn-voltar-creditos">Voltar</button>
+  </div>
+
+  <!-- ===================== LOJA ===================== -->
+  <div class="screen" id="tela-loja">
+    <div id="loja-topo">
+      <h2>Loja</h2>
+    </div>
+    <div id="loja-moedas-display">🪙 <span id="loja-moedas-valor">0</span></div>
+    <div id="loja-balao">
+      <div class="loja-itens" id="loja-itens"></div>
+    </div>
+    <button class="btn secundario" id="btn-voltar-loja">Voltar</button>
+  </div>
+
+  <!-- ===================== PERSONAGENS ===================== -->
+  <div class="screen" id="tela-personagens">
+    <div id="personagens-topo">
+      <h2>Personagens</h2>
+    </div>
+    <div id="personagens-moedas-display">🪙 <span id="personagens-moedas-valor">0</span></div>
+    <div id="personagens-balao">
+      <div class="loja-itens" id="personagens-itens"></div>
+    </div>
+    <button class="btn secundario" id="btn-voltar-personagens">Voltar</button>
+  </div>
+
+  <!-- ===================== JOGO ===================== -->
+  <div class="screen" id="tela-jogo">
+    <canvas id="canvas-jogo"></canvas>
+
+    <div id="hud">
+      <div id="nick-jogador-hud">Jogador</div>
+      <div id="habilidade-hud"><span class="icone-hab" id="habilidade-hud-icone">🔥</span><span id="habilidade-hud-nome">RAGE</span></div>
+      <div id="arma-habilidade-hud"><span class="icone-hab" id="arma-habilidade-hud-icone">🔴</span><span id="arma-habilidade-hud-nome">Feixe Laser</span></div>
+      <div class="hud-row">
+        <span class="hud-label">Vida</span>
+        <div class="barra-fundo"><div class="barra-fill" id="barra-vida-fill" style="width:100%"></div></div>
+        <div id="nivel-badge">1</div>
+      </div>
+      <div class="hud-row">
+        <span class="hud-label">Munição</span>
+        <div id="barra-municao-segmentos" class="municao-segmentos"></div>
+      </div>
+      <div class="hud-row">
+        <span class="hud-label">XP</span>
+        <div class="barra-fundo"><div class="barra-fill" id="barra-xp-fill" style="width:0%"></div></div>
+      </div>
+      <div id="reload-aviso">RECARREGANDO...</div>
+    </div>
+
+    <div id="info-onda">
+      <div id="onda-titulo">Onda <strong>1</strong> / 10</div>
+      <div id="inimigos-restantes">0 inimigos restantes</div>
+    </div>
+
+    <div id="barra-chefao" style="display:none;">
+      <div class="chefao-label">BOSS</div>
+      <div class="barra-fundo chefao-fundo"><div class="barra-fill" id="barra-chefao-fill" style="width:100%; background:linear-gradient(90deg,#8f0022,#ff2b4e); box-shadow:0 0 10px #ff2b4e;"></div></div>
+    </div>
+
+    <div id="aviso-onda"></div>
+
+    <div id="hud-moedas">🪙 <span id="moedas-total">0</span></div>
+
+    <button id="btn-pause" title="Pausar">⏸</button>
+  </div>
+
+  <!-- ===================== PAUSE ===================== -->
+  <div class="screen" id="tela-pause">
+    <h2>Jogo Pausado</h2>
+    <div class="menu-btns">
+      <button class="btn" id="btn-pause-continuar">Continuar</button>
+      <button class="btn secundario" id="btn-pause-estatisticas">Estatísticas</button>
+      <button class="btn secundario" id="btn-pause-lobby">Lobby</button>
+    </div>
+  </div>
+
+  <!-- ===================== ESTATÍSTICAS ===================== -->
+  <div class="screen" id="tela-estatisticas">
+    <h2>Habilidades Escolhidas</h2>
+    <div id="stats-box">
+      <div id="stats-vazio" style="display:none;">Nenhuma habilidade escolhida ainda.</div>
+      <div id="lista-estatisticas"></div>
+    </div>
+    <button class="btn" id="btn-estatisticas-voltar">Voltar</button>
+  </div>
+
+  <!-- ===================== LEVEL UP ===================== -->
+  <div class="screen" id="tela-levelup">
+    <h2>Você subiu de nível!</h2>
+    <p class="sub">Escolha uma habilidade para evoluir</p>
+    <div class="cartas-habilidade" id="cartas-habilidade"></div>
+  </div>
+
+  <!-- ===================== VITÓRIA ===================== -->
+  <div class="screen" id="tela-vitoria">
+    <div class="trofeu">🏆</div>
+    <h2>Você zerou o Mundo Invertido!</h2>
+    <div class="stats-final" id="stats-vitoria"></div>
+    <button class="btn" id="btn-vitoria-lobby">Voltar ao Lobby</button>
+  </div>
+
+  <!-- ===================== DERROTA ===================== -->
+  <div class="screen" id="tela-derrota">
+    <h2>Você foi consumido pelo Mundo Invertido</h2>
+    <div class="stats-final" id="stats-derrota"></div>
+    <button class="btn" id="btn-derrota-lobby">Voltar ao Lobby</button>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
